@@ -1,0 +1,154 @@
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import axios from 'axios';
+
+function App() {
+  const [user, setUser] = useState({});
+
+  // User authentication state management
+  const handleLogin = (username) => {
+    axios.post('http://localhost:8080/api/v1/login', { username })
+      .then((response) => {
+        setUser(response.data);
+      });
+  };
+
+  const handleRegister = (username, password) => {
+    axios.post('http://localhost:8080/api/v1/register', { username, password })
+      .then((response) => {
+        setUser(response.data);
+      });
+  };
+
+  // Chat interface state management
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+
+  const handleSendMessage = () => {
+    axios.post('http://localhost:8080/api/v1/chat', { message: newMessage })
+      .then((response) => {
+        setMessages([...messages, response.data]);
+        setNewMessage('');
+      });
+  };
+
+  // Model selection state management
+  const [models, setModels] = useState([]);
+  const [selectedModel, setSelectedModel] = useState('');
+
+  useEffect(() => {
+    axios.get('http://localhost:8080/api/v1/models')
+      .then((response) => {
+        setModels(response.data);
+      });
+  }, []);
+
+  // Conversation history state management
+  const [conversations, setConversations] = useState([]);
+  const handleConversationSubmit = () => {
+    axios.post('http://localhost:8080/api/v1/conversation', { conversation: messages })
+      .then((response) => {
+        setConversations([...conversations, response.data]);
+      });
+  };
+
+  // Document ingestion state management
+  const [documents, setDocuments] = useState([]);
+  const handleDocumentSubmit = () => {
+    axios.post('http://localhost:8080/api/v1/documents', { document: documents })
+      .then((response) => {
+        setDocuments(response.data);
+      });
+  };
+
+  return (
+    <Router>
+      <Switch>
+        <Route path="/" exact>
+          <Home
+            user={user}
+            handleLogin={handleLogin}
+            handleRegister={handleRegister}
+            messages={messages}
+            newMessage={newMessage}
+            handleSendMessage={handleSendMessage}
+            models={models}
+            selectedModel={selectedModel}
+            setSelectedModel={setSelectedModel}
+            conversations={conversations}
+            handleConversationSubmit={handleConversationSubmit}
+            documents={documents}
+            handleDocumentSubmit={handleDocumentSubmit}
+          />
+        </Route>
+      </Switch>
+    </Router>
+  );
+}
+
+function Home({
+  user,
+  handleLogin,
+  handleRegister,
+  messages,
+  newMessage,
+  handleSendMessage,
+  models,
+  selectedModel,
+  setSelectedModel,
+  conversations,
+  handleConversationSubmit,
+  documents,
+  handleDocumentSubmit,
+}) {
+  return (
+    <div>
+      {user.username ? (
+        <div>
+          <h1>Welcome, {user.username}!</h1>
+          <ul>
+            {messages.map((message) => (
+              <li key={message.id}>{message.text}</li>
+            ))}
+          </ul>
+          <input
+            type="text"
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+            placeholder="Type a message..."
+          />
+          <button onClick={handleSendMessage}>Send</button>
+          <select value={selectedModel} onChange={(e) => setSelectedModel(e.target.value)}>
+            {models.map((model) => (
+              <option key={model.id} value={model.name}>
+                {model.name}
+              </option>
+            ))}
+          </select>
+          <ul>
+            {conversations.map((conversation) => (
+              <li key={conversation.id}>{conversation.text}</li>
+            ))}
+          </ul>
+          <input
+            type="file"
+            accept=".docx, .pdf"
+            onChange={(e) => setDocuments([...documents, e.target.files[0]])}
+          />
+          <button onClick={handleDocumentSubmit}>Upload</button>
+        </div>
+      ) : (
+        <div>
+          <h1>Log in or register to start chatting!</h1>
+          <form>
+            <label>Username:</label>
+            <input type="text" onChange={(e) => handleRegister(e.target.value, 'password')} />
+            <button onClick={() => handleLogin('guest')}>Log in</button>
+          </form>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;

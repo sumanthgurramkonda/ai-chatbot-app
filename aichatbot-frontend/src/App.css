@@ -1,0 +1,301 @@
+/* Base */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f0f2f5;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 240px;
+  background: #1e1e1e;
+  color: white;
+  padding: 12px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 18px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 6px;
+}
+
+.conversation {
+  padding: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  background: #2a2a2a;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.conversation:hover {
+  background: #3a3a3a;
+}
+
+/* Chat container */
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+header {
+  padding: 10px;
+  background: #f5f5f5;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+header select,
+header input[type="text"] {
+  padding: 6px;
+  font-size: 14px;
+}
+
+header label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+/* Messages */
+.messages {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  max-width: 70%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  word-wrap: break-word;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.message.user {
+  background: #d1e7ff;
+  align-self: flex-end;
+}
+
+.message.assistant {
+  background: #e6e6e6;
+  align-self: flex-start;
+}
+
+/* Typing/streaming indicator */
+.message.assistant.stream {
+  background: #e0f7fa;
+  font-style: italic;
+  color: #00796b;
+}
+
+/* Footer */
+footer {
+  display: flex;
+  padding: 10px;
+  background: #f0f0f0;
+  gap: 10px;
+}
+
+footer input {
+  flex: 1;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+footer button {
+  padding: 8px 16px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+footer button:hover {
+  background: #0056b3;
+}
+
+footer button:disabled {
+  background: #a0a0a0;
+  cursor: not-allowed;
+}
+
+/* RAG / Document upload section */
+.rag-section {
+  padding: 10px;
+  background: #f9f9f9;
+  border-top: 1px solid #ddd;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.rag-section input[type="file"] {
+  flex: 1;
+}
+
+.rag-section button {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.rag-section button:hover {
+  background: #1e7e34;
+}
+
+/* Save conversation section */
+.save-section {
+  padding: 10px;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-section button {
+  background: #ffc107;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.save-section button:hover {
+  background: #e0a800;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .app {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    order: 2;
+  }
+  .chat {
+    order: 1;
+    height: 70vh;
+  }
+  .messages {
+    max-height: 60vh;
+  }
+}
+
+
+
+/* body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: #1e1e1e;
+  color: white;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.conversation {
+  padding: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+.conversation:hover {
+  background: #3a3a3a;
+}
+
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 10px;
+  background: #f5f5f5;
+  display: flex;
+  gap: 10px;
+}
+
+.messages {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  background: #fafafa;
+}
+
+.message {
+  max-width: 70%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.message.user {
+  background: #d1e7ff;
+  align-self: flex-end;
+}
+
+.message.assistant {
+  background: #e6e6e6;
+  align-self: flex-start;
+}
+
+footer {
+  display: flex;
+  padding: 10px;
+  background: #f0f0f0;
+}
+
+footer input {
+  flex: 1;
+  padding: 8px;
+}
+
+footer button {
+  margin-left: 10px;
+  padding: 8px 16px;
+}
+
+
+
+ */

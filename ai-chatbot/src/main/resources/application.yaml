@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: ai-chatbot
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:ai_chatbot}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  mvc:
+    async:
+      request-timeout: 120000
+jwt:
+  secret:${JWT_SECRET}
+ai:
+  provider:
+    api-key: key
+    type: ollama
+    base-url: http://localhost:11434
+    chat-model: llama3
+    embedding-model: nomic-embed-text
